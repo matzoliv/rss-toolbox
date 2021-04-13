@@ -1,0 +1,11 @@
+[Unit]
+After=network.target network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/path/to/rss/state
+ExecStart=/path/to/rss/update.sh
+
+[Install]
+WantedBy=default.target
+

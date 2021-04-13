@@ -1,0 +1,7 @@
+[Unit]
+
+[Timer]
+OnCalendar=*-*-* 6:00
+
+[Install]
+WantedBy=timers.target
