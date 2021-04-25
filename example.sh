@@ -30,3 +30,20 @@ process_podcast() {
 cat - << EOF | while read line; do process_podcast $line; done
 https://atp.fm/rss atp ./feed2tsv/rss2tsv_enclosure.py
 EOF
+
+process_youtube() {
+    curl --compressed -L -s "$1" \
+	| "$3" \
+	| ./print_new_update.py "store/$2.seen" \
+	| ./write_to_maildir.sh "$2@youtube" ./mail/rss/youtube/ \
+        | ./backup_youtube.sh "/videos/$2/"
+}
+
+cat - << EOF | while read line; do process_youtube $line; done
+https://www.youtube.com/feeds/videos.xml?channel_id=UCDYZxJE8kLZ-o6nL8E1bXdQ matn ./feed2tsv/atom2tsv.py
+https://www.youtube.com/feeds/videos.xml?channel_id=UCgRBRE1DUP2w7HTH9j_L4OQ medlifecrisis ./feed2tsv/atom2tsv.py
+EOF
+
+sleep 1
+
+mbsync -a fastmail
