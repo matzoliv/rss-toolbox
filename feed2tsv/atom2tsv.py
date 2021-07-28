@@ -21,4 +21,7 @@ for item in root.findall('atom:entry', ns):
     timestamp = int(parse_date(date).timestamp())
     sys.stdout.write(str(timestamp)); sys.stdout.write('\t')
     sys.stdout.write(item.find('atom:title', ns).text.strip()); sys.stdout.write('\t')
-    sys.stdout.write(item.find('atom:link[@rel=\'alternate\']', ns).attrib['href'].strip()); sys.stdout.write('\n')
+    link = item.find('atom:link[@rel=\'alternate\']', ns)
+    if link == None:
+        link = item.find('atom:link', ns)
+    sys.stdout.write(link.attrib['href'].strip()); sys.stdout.write('\n')
